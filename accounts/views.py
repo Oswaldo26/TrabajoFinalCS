@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .forms import RegistrationForm
+from .forms import RegistrationForm, RegistrationStoreForm
 from .models import Account
 from django.contrib import messages , auth
 from django.contrib.auth.decorators import login_required
@@ -28,6 +28,8 @@ def register(request):
             username = email.split("@")[0]
             user = Account.objects.create_user(first_name=first_name, last_name=last_name, email=email, username=username, password=password )
             user.phone_number = phone_number
+            user.name_store = ''
+            user.address = ''
             user.save()
 
             current_site = get_current_site(request)
@@ -48,6 +50,46 @@ def register(request):
         'form' : form
     }
     return render(request, 'accounts/register.html', context)
+
+def registerTienda(request):
+    form = RegistrationStoreForm()
+    if request.method == 'POST':
+        form = RegistrationStoreForm(request.POST)
+        if form.is_valid():
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
+            name_store = form.cleaned_data['name_store']
+            address = form.cleaned_data['address']
+            phone_number = form.cleaned_data['phone_number']
+            email = form.cleaned_data['email']
+            password = form.cleaned_data['password']
+            username = email.split("@")[0]
+            user = Account.objects.create_user(first_name=first_name, last_name=last_name, email=email, username=username, password=password )
+            user.phone_number = phone_number
+            user.name_store = name_store
+            user.address = address
+            user.is_staff = True
+            user.is_admin = True
+            user.save()
+
+            current_site = get_current_site(request)
+            mail_subject = 'Por favor activa tu cuenta en nuestra plataforma virtual'
+            body = render_to_string('accounts/account_verification_email.html',{
+                'user':user,
+                'domain':current_site,
+                'uid':urlsafe_base64_encode(force_bytes(user.pk)),
+                'token':default_token_generator.make_token(user),
+            })
+            to_email = email
+            send_email = EmailMessage(mail_subject, body, to=[to_email])
+            send_email.send()
+            #messages.success(request, 'Se registro al usuario exitosamente')
+            return redirect('/accounts/login/?command=verification&email='+email)
+
+    context = {
+        'form' : form
+    }
+    return render(request, 'accounts/registerTienda.html', context)
 
 def login(request):
     if request.method == 'POST':
@@ -106,7 +148,11 @@ def login(request):
                     nexPage = params['next']
                     return redirect(nexPage)
             except:
-                return redirect('dashboard')
+                #return redirect('dashboard')
+                if user.is_admin:
+                    return redirect('dashboard')
+                else:
+                    return redirect('/')
 
         else:
             messages.error(request, 'Las credenciales son incorrectas')

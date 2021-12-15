@@ -47,6 +47,8 @@ class Account(AbstractBaseUser):
     username = models.CharField(max_length=50, unique=True)
     email = models.CharField(max_length=100, unique=True)
     phone_number = models.CharField(max_length=50)
+    name_store = models.CharField(max_length=50)
+    address = models.CharField(max_length=100)
 
 
     date_joined = models.DateTimeField(auto_now_add=True)
@@ -56,7 +58,7 @@ class Account(AbstractBaseUser):
     is_active = models.BooleanField(default=False)
     is_superadmin = models.BooleanField(default=False)
 
-    # esto para el loging
+    # esto para el login
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username', 'first_name', 'last_name']
 
