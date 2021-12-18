@@ -69,7 +69,7 @@
           <h3>Calificación de Clientes </h3>
         </header>
 
-        <form action="" method="post">
+        <form action="{% url 'submit_review' single_product.id %}" method="post">
           {% csrf_token %}
           <h5>Escribe tu comentario</h5>
           <div class="">
@@ -92,10 +92,22 @@
             <input type="text" class="form-control" name="subject" value="">
             <br>
             Comentario:
-            <textarea name="comentario" rows="4" class="form-control"></textarea>
+            <textarea name="review" rows="4" class="form-control"></textarea>
             <br>
-            <input type="submit" name="" value="Enviar Comentario" class="btn btn-primary">
+            {% if user.is_authenticated %}
+
+              {% if orderproduct %}
+                <input type="submit" name="" value="Enviar Comentario" class="btn btn-primary">
+              {% else %}
+                <p>Debe primero comprar el producto para poder enviar un comentario</p>
+              {% endif %}
+
+            {% else %}
+              <p>Para enviar un comentario debes estar registrado <span><a href="{% url 'login' %}"> Inicia Sesion </a></span></p>
+            {% endif %}
+
           </div>
+          {% include 'includes/alerts.html' %}
         </form>
 
 
