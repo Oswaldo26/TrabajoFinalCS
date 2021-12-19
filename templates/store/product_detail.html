@@ -13,6 +13,7 @@
             </div> <!-- img-big-wrap.// -->
           </article> <!-- gallery-wrap .end// -->
         </aside>
+
         <main class="col-md-6 border-left">
 
           <form action="{% url 'add_cart' single_product.id %}" method="POST">
@@ -20,10 +21,32 @@
 
             <article class="content-body">
               <h2 class="title">{{ single_product.product_name }}</h2>
+              <div class="rating-star">
+                <span>
+                  <i class="fa fa-star{% if single_product.averageReview < 0.5 %}-o{% elif single_product.averageReview >= 0.5 and single_product.averageReview < 1 %}-half-o {% endif %}"
+                    aria-hidden="true"></i>
+                  <i class="fa fa-star{% if single_product.averageReview < 1.5 %}-o{% elif single_product.averageReview >= 1.5 and single_product.averageReview < 2 %}-half-o {% endif %}"
+                    aria-hidden="true"></i>
+                  <i class="fa fa-star{% if single_product.averageReview < 2.5 %}-o{% elif single_product.averageReview >= 2.5 and single_product.averageReview < 3 %}-half-o {% endif %}"
+                    aria-hidden="true"></i>
+                  <i class="fa fa-star{% if single_product.averageReview < 3.5 %}-o{% elif single_product.averageReview >= 3.5 and single_product.averageReview < 4 %}-half-o {% endif %}"
+                    aria-hidden="true"></i>
+                  <i class="fa fa-star{% if single_product.averageReview < 4.5 %}-o{% elif single_product.averageReview >= 4.5 and single_product.averageReview < 5 %}-half-o {% endif %}"
+                    aria-hidden="true"></i>
+                </span>
+              </div>
+              <span> {{ single_product.countReview }} Comentarios </span>
+
+
+
               <div class="mb-3">
                 <var class="price h4">${{ single_product.price}}</var>
               </div>
+
+
               <p>{{ single_product.description}}</p>
+              
+              
               <hr>
               <div class="row">
                 <div class="item-option-select">
@@ -48,13 +71,13 @@
                 </div>
               </div> <!-- row.// -->
               <hr>
-              {% if single_product.stock <= 0 %}
-              <h5>Producto fuera de stock</h5>
-              {% else %}
+              {% if single_product.stock <= 0 %} <h5>Producto fuera de stock</h5>
+                {% else %}
 
-              <button type ="submit" class="btn  btn-primary"> <span class="text">Agregar al shopping cart</span> <i class="fas fa-shopping-cart"></i></button>
+                <button type="submit" class="btn  btn-primary"> <span class="text">Agregar al shopping cart</span> <i
+                    class="fas fa-shopping-cart"></i></button>
 
-              {% endif %}
+                {% endif %}
             </article> <!-- product-info-aside .// -->
           </form>
         </main> <!-- col.// -->
@@ -77,15 +100,20 @@
             <br>
             <div class="rate">
               <input type="radio" name="rating" value="5" id="rating10"><label for="rating10" title="5"></label>
-              <input type="radio" name="rating" value="4.5" id="rating9"><label for="rating9" title="4.5" class="half"></label>
+              <input type="radio" name="rating" value="4.5" id="rating9"><label for="rating9" title="4.5"
+                class="half"></label>
               <input type="radio" name="rating" value="4" id="rating8"><label for="rating8" title="4"></label>
-              <input type="radio" name="rating" value="3.5" id="rating7"><label for="rating7" title="3.5" class="half"></label>
+              <input type="radio" name="rating" value="3.5" id="rating7"><label for="rating7" title="3.5"
+                class="half"></label>
               <input type="radio" name="rating" value="3" id="rating6"><label for="rating6" title="3"></label>
-              <input type="radio" name="rating" value="2.5" id="rating5"><label for="rating5" title="2.5" class="half"></label>
+              <input type="radio" name="rating" value="2.5" id="rating5"><label for="rating5" title="2.5"
+                class="half"></label>
               <input type="radio" name="rating" value="2" id="rating4"><label for="rating4" title="2"></label>
-              <input type="radio" name="rating" value="1.5" id="rating3"><label for="rating3" title="1.5" class="half"></label>
+              <input type="radio" name="rating" value="1.5" id="rating3"><label for="rating3" title="1.5"
+                class="half"></label>
               <input type="radio" name="rating" value="1" id="rating2"><label for="rating2" title="1"></label>
-              <input type="radio" name="rating" value="0.5" id="rating1"><label for="rating1" title="0.5" class="half"></label>
+              <input type="radio" name="rating" value="0.5" id="rating1"><label for="rating1" title="0.5"
+                class="half"></label>
             </div>
             <br>
             Titulo de comentario:
@@ -95,9 +123,20 @@
             <textarea name="review" rows="4" class="form-control"></textarea>
             <br>
             {% if user.is_authenticated %}
+<<<<<<< HEAD
+            <input type="submit" name="" value="Enviar Comentario" class="btn btn-primary">
+=======
+
+            {% if orderproduct %}
             <input type="submit" name="" value="Enviar Comentario" class="btn btn-primary">
             {% else %}
-              <p>Para enviar un comentario debes estar registrado <span><a href="{% url 'login' %}"> Inicia Sesion </a></span></p>
+            <p>Debe primero comprar el producto para poder enviar un comentario</p>
+            {% endif %}
+
+>>>>>>> cc8b0c918b4a71aae269cbf5856c5a36a9f280be
+            {% else %}
+            <p>Para enviar un comentario debes estar registrado <span><a href="{% url 'login' %}"> Inicia Sesion
+                </a></span></p>
             {% endif %}
 
           </div>
