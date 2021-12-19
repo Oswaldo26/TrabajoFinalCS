@@ -35,7 +35,7 @@ def register(request):
 
 
             profile = UserProfile()
-            profile.user_id = user.id 
+            profile.user_id = user.id
             profile.profile_picture = 'default/default-user.png'
             profile.save()
 
@@ -158,7 +158,7 @@ def login(request):
             except:
                 #return redirect('dashboard')
                 if user.is_admin:
-                    return redirect('dashboard')
+                    return redirect('/')
                 else:
                     return redirect('/')
 
@@ -285,7 +285,7 @@ def edit_profile(request):
     else:
         user_form = UserForm(instance=request.user)
         profile_form = UserProfileForm(instance=userprofile)
-    
+
     context = {
         'user_form': user_form,
         'profile_form': profile_form,
@@ -318,4 +318,3 @@ def change_password(request):
             return redirect('change_password')
 
     return render(request, 'accounts/change_password.html')
-
