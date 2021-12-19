@@ -95,13 +95,7 @@
             <textarea name="review" rows="4" class="form-control"></textarea>
             <br>
             {% if user.is_authenticated %}
-
-              {% if orderproduct %}
-                <input type="submit" name="" value="Enviar Comentario" class="btn btn-primary">
-              {% else %}
-                <p>Debe primero comprar el producto para poder enviar un comentario</p>
-              {% endif %}
-
+            <input type="submit" name="" value="Enviar Comentario" class="btn btn-primary">
             {% else %}
               <p>Para enviar un comentario debes estar registrado <span><a href="{% url 'login' %}"> Inicia Sesion </a></span></p>
             {% endif %}
