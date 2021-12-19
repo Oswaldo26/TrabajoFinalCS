@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import RegistrationForm, UserForm, UserProfileForm
+from .forms import RegistrationForm, UserProfileForm, UserForm
 from .models import Account, UserProfile
 from orders.models import Order
 from django.contrib import messages , auth
@@ -32,6 +32,13 @@ def register(request):
             user.name_store = ''
             user.address = ''
             user.save()
+
+
+            profile = UserProfile()
+            profile.user_id = user.id 
+            profile.profile_picture = 'default/default-user.png'
+            profile.save()
+
 
             current_site = get_current_site(request)
             mail_subject = 'Por favor activa tu cuenta en nuestra plataforma virtual'
@@ -275,9 +282,11 @@ def edit_profile(request):
     else:
         user_form = UserForm(instance=request.user)
         profile_form = UserProfileForm(instance=userprofile)
+    
     context = {
         'user_form': user_form,
         'profile_form': profile_form,
         'userprofile': userprofile,
     }
+
     return render(request, 'accounts/edit_profile.html', context)
