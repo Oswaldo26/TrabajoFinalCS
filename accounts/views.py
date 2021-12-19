@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import RegistrationForm, UserProfileForm, UserForm
+from .forms import RegistrationForm, UserProfileForm, UserForm, RegistrationStoreForm
 from .models import Account, UserProfile
 from orders.models import Order
 from django.contrib import messages , auth
