@@ -80,6 +80,11 @@ def registerTienda(request):
             user.is_admin = True
             user.save()
 
+            profile = UserProfile()
+            profile.user_id = user.id
+            profile.profile_picture = 'default/default-user.png'
+            profile.save()
+            
             current_site = get_current_site(request)
             mail_subject = 'Por favor activa tu cuenta en nuestra plataforma virtual'
             body = render_to_string('accounts/account_verification_email.html',{
